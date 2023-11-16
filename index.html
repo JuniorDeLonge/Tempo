@@ -2,7 +2,7 @@
 <html lang="pt-br">
 
 <head>
-  <title>Clima Agora</title>
+  <title>Clima Agora | Junior DeLonge</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Veja como está o Clima Agora em tempo real">
@@ -16,9 +16,11 @@
 </head>
 
 <body>
-  <div class="wrapper">
-    <header><i class='bx bx-left-arrow-alt'></i>Clima Agora</header>
+  <div class="wrapper" id="weatherWrapper">
+    <header class="header-clima">Clima Agora | dev @juniordelonge</header>
+    <header class="header-voltar" style="display:none;"><i class='bx bx-left-arrow-alt'></i>Voltar</header>
     <section class="input-part">
+      
       <p id="error-message" class="info-txt"></p>
       <div class="content">
         <input id="city-input" type="text" spellcheck="false" placeholder="Pesquisar por cidade..." required>

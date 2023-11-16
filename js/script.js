@@ -1,22 +1,3 @@
-
-const weatherConditions = {
-    'Clear': "url('imagens/claro.jpg')",
-    'Rain': "url('imagens/chuva.jpg')",
-    'Clouds': "url('imagens/nuvens.jpg')",
-    'Snow': "url('imagens/neve.jpg')",
-    'Drizzle': "url('imagens/chuvisco.jpg')",
-    'Thunderstorm': "url('imagens/tempestade.jpg')",
-    'Fog': "url('imagens/neblina.jpg')",
-    'Mist': "url('imagens/nevoa.jpg')",
-    'Haze': "url('imagens/bruma.jpg')",
-    'Smoke': "url('imagens/fumaca.jpg')",
-    'Dust': "url('imagens/poeira.jpg')",
-    'Sand': "url('imagens/areia.jpg')",
-    'Ash': "url('imagens/cinzas.jpg')",
-    'Squall': "url('imagens/rajada.jpg')",
-    'Tornado': "url('imagens/tornado.jpg')"
-};
-
 const wrapper = document.querySelector(".wrapper"),
     inputPart = document.querySelector(".input-part"),
     infoTxt = inputPart.querySelector(".info-txt"),
@@ -24,32 +5,73 @@ const wrapper = document.querySelector(".wrapper"),
     locationBtn = inputPart.querySelector("button"),
     weatherPart = wrapper.querySelector(".weather-part"),
     wIcon = weatherPart.querySelector("img"),
-    arrowBack = wrapper.querySelector("header i");
+    arrowBack = wrapper.querySelector("header i"),
+    headerClima = document.querySelector('.header-clima'),
+    headerVoltar = document.querySelector('.header-voltar');
 
 let api;
+let apiKey; // Variável para armazenar a chave da API
+
+// Use a função assíncrona para obter a chave da API
+async function getApiKey() {
+    // Simule uma chamada de servidor para obter a chave
+    return '3adf342557400a33545abde1b7a7bca9';
+}
 
 inputField.addEventListener("keyup", e => {
     if (e.key == "Enter" && inputField.value != "") {
         requestApi(inputField.value);
+        toggleHeaders(true);
     }
 });
 
 locationBtn.addEventListener("click", () => {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(onSuccess, onError);
+        toggleHeaders(true);
     } else {
-        alert("Seu navegador não suporta a API de geolocalização");
+        alert("Seu navegador não suporta geolocalização");
     }
 });
 
-function requestApi(city) {
-    api = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=3adf342557400a33545abde1b7a7bca9`;
+arrowBack.addEventListener("click", () => {
+    wrapper.classList.remove("active");
+    toggleHeaders(false);
+    resetBackground();
+    setTimeout(() => {
+        headerClima.style.display = 'flex';
+        headerVoltar.style.display = 'none';
+    }, 1000);
+});
+
+function resetBackground() {
+    document.body.style.backgroundImage = ''; // Defina o plano de fundo inicial aqui
+}
+
+function toggleHeaders(showClima) {
+    headerClima.style.display = showClima ? 'flex' : 'none';
+    headerVoltar.style.display = showClima ? 'none' : 'flex';
+
+    if (!showClima) {
+        setTimeout(() => {
+            headerVoltar.style.display = 'flex';
+            headerClima.style.display = 'none';
+        }, 1000);
+    }
+}
+
+async function requestApi(city) {
+    // Obtenha a chave da API antes de fazer a solicitação
+    apiKey = await getApiKey();
+    api = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=pt_br&appid=${apiKey}`;
     fetchData();
 }
 
-function onSuccess(position) {
+async function onSuccess(position) {
     const { latitude, longitude } = position.coords;
-    api = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=3adf342557400a33545abde1b7a7bca9`;
+    // Obtenha a chave da API antes de fazer a solicitação
+    apiKey = await getApiKey();
+    api = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&lang=pt_br&appid=${apiKey}`;
     fetchData();
 }
 
@@ -64,7 +86,11 @@ function fetchData() {
 
     fetch(api)
         .then(res => res.json())
-        .then(result => weatherDetails(result))
+        .then(result => {
+            weatherDetails(result);
+            // Após obter os detalhes do clima, esconde o header-clima
+            toggleHeaders(false);
+        })
         .catch(() => {
             infoTxt.innerText = "Algo deu errado";
             infoTxt.classList.replace("pending", "error");
@@ -105,8 +131,6 @@ function weatherDetails(info) {
             wIcon.src = "icons/default.svg";
     }
 
-
-
     if (info.cod == "404") {
         infoTxt.classList.replace("pending", "error");
         infoTxt.innerText = `${inputField.value} não é um nome de cidade válido`;
@@ -126,10 +150,47 @@ function weatherDetails(info) {
     }
 }
 
+
+
+// Condições climáticas
+const weatherConditions = {
+    'Clear': "imagens/claro.jpg",
+    'Rain': "imagens/chuva.jpg",
+    'Clouds': "imagens/nuvens.jpg",
+    'Snow': "imagens/neve.jpg",
+    'Drizzle': "imagens/chuvisco.jpg",
+    'Thunderstorm': "imagens/tempestade.jpg",
+    'Fog': "imagens/neblina.jpg",
+    'Mist': "imagens/nevoa.jpg",
+    'Haze': "imagens/bruma.jpg",
+    'Smoke': "imagens/fumaca.jpg",
+    'Dust': "imagens/poeira.jpg",
+    'Sand': "imagens/areia.jpg",
+    'Ash': "imagens/cinzas.jpg",
+    'Squall': "imagens/rajada.jpg",
+    'Tornado': "imagens/tornado.jpg"
+};
+
+
 function changeBackground(clima) {
     const body = document.body;
     const lowerCaseClima = clima.toLowerCase();
 
+    // Verifique se a descrição do clima contém alguma chave do objeto weatherConditions
+    const matchingCondition = Object.keys(weatherConditions).find(condition =>
+        lowerCaseClima.includes(condition.toLowerCase())
+    );
+
+    // Defina o plano de fundo com base no clima atual
+    if (matchingCondition) {
+        const imagePath = weatherConditions[matchingCondition];
+        body.style.backgroundImage = `url(${imagePath})`;
+    } else {
+        body.style.backgroundImage = '';
+    }
+
+
+    // Defina o plano de fundo com base no clima atual
     if (lowerCaseClima.includes('clear')) {
         body.style.backgroundImage = weatherConditions['Clear'] || '';
     } else if (lowerCaseClima.includes('rain')) {
@@ -151,12 +212,3 @@ function changeBackground(clima) {
     }
 }
 
-arrowBack.addEventListener("click", () => {
-    wrapper.classList.remove("active");
-});
-
-async function getApiKey() {
-    return '3adf342557400a33545abde1b7a7bca9';
-}
-
-  
