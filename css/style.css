@@ -274,7 +274,7 @@ header-clima {
 /* Large screens, desktops */
 @media only screen and (min-width: 1025px) {
   .wrapper {
-    max-width: 1200px; /* Adjust for large screens */
+    max-width: 400px; /* Adjust for large screens */
   }
 }
 
