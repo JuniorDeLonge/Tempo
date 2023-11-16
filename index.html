@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <title>Clima Agora</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Veja como está o Clima Agora em tempo real">
+  <meta name="author" content="Junior DeLonge">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="shortcut icon" href="img/clima.png" type="image/x-icon" alt="Ícone do Clima">
+  <meta name="theme-color" content="#368cd7">
+  <link href="css/style.css" rel="stylesheet">
+  <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+  <div class="wrapper">
+    <header><i class='bx bx-left-arrow-alt'></i>Clima Agora</header>
+    <section class="input-part">
+      <p id="error-message" class="info-txt"></p>
+      <div class="content">
+        <input id="city-input" type="text" spellcheck="false" placeholder="Pesquisar por cidade..." required>
+        <div class="separator"></div>
+        <button id="location-button" aria-label="Localização"><i class="fas fa-location-arrow"></i></button>
+      </div>
+    </section>
+    <section class="weather-part">
+      <img id="wIcon" src="" alt="Weather Icon">
+      <div class="temp">
+        <span id="temperature" class="numb">_</span>
+        <span class="deg">°</span>C
+      </div>
+      <div id="condition" class="weather">_ _</div>
+      <div class="location">
+        <i class='bx bx-map'></i>
+        <span id="city-name">_, _</span>
+      </div>
+      <div class="bottom-details">
+        <div class="column feels">
+          <i class='bx bxs-thermometer'></i>
+          <div class="details">
+            <div class="temp">
+              <span id="feels-like" class="numb-2">_</span>
+              <span class="deg">°</span>C
+            </div>
+            <p>Sensação</p>
+          </div>
+        </div>
+        <div class="column humidity">
+          <i class='bx bxs-droplet-half'></i>
+          <div class="details">
+            <span id="humidity">_</span>
+            <p>Umidade</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+
+</html>
