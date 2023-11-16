@@ -24,8 +24,14 @@ body {
   background-color: #1d9ffc;
 }
 
+/* Add specific styles for iPhone X */
+body.iphone-x {
+  padding-top: 20px;
+}
+
 .wrapper {
-  width: 400px;
+  max-width: 400px;
+  width: 100%;
   background: #fff;
   border-radius: 7px;
   box-shadow: 7px 7px 20px rgba(0, 0, 0, 0.05);
@@ -48,7 +54,7 @@ header i {
 }
 
 header-clima {
-  background: #43AFFC;
+  background: #43affc;
   color: #fff;
   padding: 16px 15px;
 }
@@ -242,4 +248,42 @@ header-clima {
 
 .humidity i {
   font-size: 37px;
+}
+
+/* Media Queries for Responsiveness */
+
+/* Small screens, smartphones */
+@media only screen and (max-width: 600px) {
+  .wrapper {
+    max-width: 100%; /* Adjust for smaller screens */
+  }
+
+  .input-part,
+  .weather-part {
+    margin: 15px 0; /* Adjust margin for smaller screens */
+  }
+}
+
+/* Medium screens, tablets */
+@media only screen and (min-width: 601px) and (max-width: 1024px) {
+  .wrapper {
+    max-width: 80%; /* Adjust for medium-sized screens */
+  }
+}
+
+/* Large screens, desktops */
+@media only screen and (min-width: 1025px) {
+  .wrapper {
+    max-width: 1200px; /* Adjust for large screens */
+  }
+}
+
+/* Media Query for iPhone X */
+@media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+  body {
+    padding-top: 20px;
+  }
+  .wrapper {
+    max-width: 70%; /* Adjust for medium-sized screens */
+  }
 }

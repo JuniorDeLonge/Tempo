@@ -63,7 +63,8 @@ function toggleHeaders(showClima) {
 async function requestApi(city) {
     // Obtenha a chave da API antes de fazer a solicitação
     apiKey = await getApiKey();
-    api = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=pt_br&appid=${apiKey}`;
+    const userLanguage = navigator.language || navigator.userLanguage; // Obtenha a linguagem do usuário
+    api = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=${userLanguage}&appid=${apiKey}`;
     fetchData();
 }
 
@@ -71,7 +72,8 @@ async function onSuccess(position) {
     const { latitude, longitude } = position.coords;
     // Obtenha a chave da API antes de fazer a solicitação
     apiKey = await getApiKey();
-    api = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&lang=pt_br&appid=${apiKey}`;
+    const userLanguage = navigator.language || navigator.userLanguage; // Obtenha a linguagem do usuário
+    api = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&lang=${userLanguage}&appid=${apiKey}`;
     fetchData();
 }
 
@@ -80,21 +82,26 @@ function onError(error) {
     infoTxt.classList.add("error");
 }
 
-function fetchData() {
+async function fetchData() {
     infoTxt.innerText = "Obtendo detalhes do clima...";
     infoTxt.classList.add("pending");
 
-    fetch(api)
-        .then(res => res.json())
-        .then(result => {
+    try {
+        const response = await fetch(api);
+        const result = await response.json();
+
+        if (response.ok) {
             weatherDetails(result);
             // Após obter os detalhes do clima, esconde o header-clima
             toggleHeaders(false);
-        })
-        .catch(() => {
+        } else {
             infoTxt.innerText = "Algo deu errado";
             infoTxt.classList.replace("pending", "error");
-        });
+        }
+    } catch (error) {
+        infoTxt.innerText = "Algo deu errado";
+        infoTxt.classList.replace("pending", "error");
+    }
 }
 
 function weatherDetails(info) {
@@ -139,7 +146,7 @@ function weatherDetails(info) {
         changeBackground(description);
 
         weatherPart.querySelector(".temp .numb").innerText = Math.floor(info.main.temp);
-        weatherPart.querySelector(".weather").innerText = description;
+        weatherPart.querySelector(".weather").innerText = translateWeatherDescription(description, 'pt'); // Traduz para português
         weatherPart.querySelector(".location span").innerText = `${info.name}, ${info.sys.country}`;
         weatherPart.querySelector(".temp .numb-2").innerText = Math.floor(info.main.feels_like);
         weatherPart.querySelector(".humidity span").innerText = `${info.main.humidity}%`;
@@ -150,31 +157,74 @@ function weatherDetails(info) {
     }
 }
 
-
-
 // Condições climáticas
 const weatherConditions = {
-    'Clear': "imagens/claro.jpg",
-    'Rain': "imagens/chuva.jpg",
-    'Clouds': "imagens/nuvens.jpg",
-    'Snow': "imagens/neve.jpg",
-    'Drizzle': "imagens/chuvisco.jpg",
-    'Thunderstorm': "imagens/tempestade.jpg",
-    'Fog': "imagens/neblina.jpg",
-    'Mist': "imagens/nevoa.jpg",
-    'Haze': "imagens/bruma.jpg",
-    'Smoke': "imagens/fumaca.jpg",
-    'Dust': "imagens/poeira.jpg",
-    'Sand': "imagens/areia.jpg",
-    'Ash': "imagens/cinzas.jpg",
-    'Squall': "imagens/rajada.jpg",
-    'Tornado': "imagens/tornado.jpg"
+    'Clear': {
+        label: 'Claro',
+        image: 'imagens/claro.jpg'
+    },
+    'Rain': {
+        label: 'Chuva',
+        image: 'imagens/chuva.jpg'
+    },
+    'Clouds': {
+        label: 'Nuvens',
+        image: 'imagens/nuvens.jpg'
+    },
+    'Snow': {
+        label: 'Neve',
+        image: 'imagens/neve.jpg'
+    },
+    'Drizzle': {
+        label: 'Chuvisco',
+        image: 'imagens/chuvisco.jpg'
+    },
+    'Thunderstorm': {
+        label: 'Tempestade',
+        image: 'imagens/tempestade.jpg'
+    },
+    'Fog': {
+        label: 'Neblina',
+        image: 'imagens/neblina.jpg'
+    },
+    'Mist': {
+        label: 'Névoa',
+        image: 'imagens/nevoa.jpg'
+    },
+    'Haze': {
+        label: 'Bruma',
+        image: 'imagens/bruma.jpg'
+    },
+    'Smoke': {
+        label: 'Fumaça',
+        image: 'imagens/fumaca.jpg'
+    },
+    'Dust': {
+        label: 'Poeira',
+        image: 'imagens/poeira.jpg'
+    },
+    'Sand': {
+        label: 'Areia',
+        image: 'imagens/areia.jpg'
+    },
+    'Ash': {
+        label: 'Cinzas',
+        image: 'imagens/cinzas.jpg'
+    },
+    'Squall': {
+        label: 'Rajada',
+        image: 'imagens/rajada.jpg'
+    },
+    'Tornado': {
+        label: 'Tornado',
+        image: 'imagens/tornado.jpg'
+    }
 };
 
-
-function changeBackground(clima) {
+// Função para alterar o plano de fundo com base no clima
+function changeBackground(description) {
     const body = document.body;
-    const lowerCaseClima = clima.toLowerCase();
+    const lowerCaseClima = description.toLowerCase();
 
     // Verifique se a descrição do clima contém alguma chave do objeto weatherConditions
     const matchingCondition = Object.keys(weatherConditions).find(condition =>
@@ -183,32 +233,51 @@ function changeBackground(clima) {
 
     // Defina o plano de fundo com base no clima atual
     if (matchingCondition) {
-        const imagePath = weatherConditions[matchingCondition];
-        body.style.backgroundImage = `url(${imagePath})`;
-    } else {
-        body.style.backgroundImage = '';
-    }
-
-
-    // Defina o plano de fundo com base no clima atual
-    if (lowerCaseClima.includes('clear')) {
-        body.style.backgroundImage = weatherConditions['Clear'] || '';
-    } else if (lowerCaseClima.includes('rain')) {
-        body.style.backgroundImage = weatherConditions['Rain'] || '';
-    } else if (lowerCaseClima.includes('cloud')) {
-        body.style.backgroundImage = weatherConditions['Clouds'] || '';
-    } else if (lowerCaseClima.includes('snow')) {
-        body.style.backgroundImage = weatherConditions['Snow'] || '';
-    } else if (lowerCaseClima.includes('drizzle')) {
-        body.style.backgroundImage = weatherConditions['Drizzle'] || '';
-    } else if (lowerCaseClima.includes('thunderstorm')) {
-        body.style.backgroundImage = weatherConditions['Thunderstorm'] || '';
-    } else if (lowerCaseClima.includes('fog') || lowerCaseClima.includes('mist')) {
-        body.style.backgroundImage = weatherConditions['Fog'] || '';
-    } else if (lowerCaseClima.includes('haze')) {
-        body.style.backgroundImage = weatherConditions['Haze'] || '';
+        const { image } = weatherConditions[matchingCondition];
+        body.style.backgroundImage = `url(${image})`;
     } else {
         body.style.backgroundImage = '';
     }
 }
 
+function translateWeatherDescription(description, targetLanguage) {
+    // Adicione traduções conforme necessário
+    const translations = {
+        'clear sky': 'céu limpo',
+        'few clouds': 'poucas nuvens',
+        'scattered clouds': 'nuvens dispersas',
+        'broken clouds': 'nuvens quebradas',
+        'overcast clouds': 'nuvens nubladas',
+        'light rain': 'chuva fraca',
+        'moderate rain': 'chuva moderada',
+        'heavy intensity rain': 'chuva intensa',
+        'very heavy rain': 'chuva muito intensa',
+        'freezing rain': 'chuva congelante',
+        'light snow': 'neve fraca',
+        'moderate snow': 'neve moderada',
+        'heavy snow': 'neve intensa',
+        'sleet': 'chuva congelada',
+        'shower rain': 'chuva forte',
+        'thunderstorm': 'tempestade',
+        'mist': 'névoa',
+        'smoke': 'fumaça',
+        'haze': 'névoa seca',
+        'sand/ dust whirls': 'redemoinhos de areia/poeira',
+        'fog': 'neblina',
+        'sand': 'areia',
+        'dust': 'poeira',
+        'volcanic ash': 'cinzas vulcânicas',
+        'squalls': 'rajadas de vento',
+        'tornado': 'tornado'
+        // Adicione mais traduções conforme necessário
+    };
+
+    const lowerCaseDescription = description.toLowerCase();
+    const translatedDescription = translations[lowerCaseDescription] || 'Desconhecido';
+
+    if (targetLanguage === 'pt') {
+        return translatedDescription;
+    } else {
+        return description;
+    }
+}
