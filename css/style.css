@@ -270,20 +270,3 @@ header-clima {
     max-width: 80%; /* Adjust for medium-sized screens */
   }
 }
-
-/* Large screens, desktops */
-@media only screen and (min-width: 1025px) {
-  .wrapper {
-    max-width: 400px; /* Adjust for large screens */
-  }
-}
-
-/* Media Query for iPhone X */
-@media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
-  body {
-    padding-top: 20px;
-  }
-  .wrapper {
-    max-width: 70%; /* Adjust for medium-sized screens */
-  }
-}
