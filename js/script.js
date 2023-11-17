@@ -78,9 +78,16 @@ async function onSuccess(position) {
 }
 
 function onError(error) {
-    infoTxt.innerText = error.message;
+    if (error.code === 1) {
+        // Permission denied by user
+        infoTxt.innerText = "Ops! você recusou o acesso à sua localização. Sem ela, não podemos mostrar o clima da sua região de maneira automático.";
+    } else {
+        // Handle other geolocation errors
+        infoTxt.innerText = "Error getting geolocation: " + error.message;
+    }
     infoTxt.classList.add("error");
 }
+
 
 async function fetchData() {
     infoTxt.innerText = "Obtendo detalhes do clima...";
