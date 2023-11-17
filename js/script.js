@@ -243,32 +243,32 @@ function changeBackground(description) {
 function translateWeatherDescription(description, targetLanguage) {
     // Adicione traduções conforme necessário
     const translations = {
-        'clear sky': 'céu limpo',
-        'few clouds': 'poucas nuvens',
-        'scattered clouds': 'nuvens dispersas',
-        'broken clouds': 'nuvens quebradas',
-        'overcast clouds': 'nuvens nubladas',
-        'light rain': 'chuva fraca',
-        'moderate rain': 'chuva moderada',
-        'heavy intensity rain': 'chuva intensa',
-        'very heavy rain': 'chuva muito intensa',
-        'freezing rain': 'chuva congelante',
-        'light snow': 'neve fraca',
-        'moderate snow': 'neve moderada',
-        'heavy snow': 'neve intensa',
-        'sleet': 'chuva congelada',
-        'shower rain': 'chuva forte',
-        'thunderstorm': 'tempestade',
-        'mist': 'névoa',
-        'smoke': 'fumaça',
-        'haze': 'névoa seca',
-        'sand/ dust whirls': 'redemoinhos de areia/poeira',
-        'fog': 'neblina',
-        'sand': 'areia',
-        'dust': 'poeira',
-        'volcanic ash': 'cinzas vulcânicas',
-        'squalls': 'rajadas de vento',
-        'tornado': 'tornado'
+        'clear sky': 'Céu limpo',
+        'few clouds': 'Poucas nuvens',
+        'scattered clouds': 'Nuvens dispersas',
+        'broken clouds': 'Nuvens quebradas',
+        'overcast clouds': 'Nuvens nubladas',
+        'light rain': 'Chuva fraca',
+        'moderate rain': 'Chuva moderada',
+        'heavy intensity rain': 'Chuva intensa',
+        'very heavy rain': 'Chuva muito intensa',
+        'freezing rain': 'Chuva congelante',
+        'light snow': 'Neve fraca',
+        'moderate snow': 'Neve moderada',
+        'heavy snow': 'Neve intensa',
+        'sleet': 'Chuva congelada',
+        'shower rain': 'Chuva forte',
+        'thunderstorm': 'Tempestade',
+        'mist': 'Névoa',
+        'smoke': 'Fumaça',
+        'haze': 'Névoa seca',
+        'sand/ dust whirls': 'Redemoinhos de areia/poeira',
+        'fog': 'Neblina',
+        'sand': 'Areia',
+        'dust': 'Poeira',
+        'volcanic ash': 'Cinzas vulcânicas',
+        'squalls': 'Rajadas de vento',
+        'tornado': 'Tornado'
         // Adicione mais traduções conforme necessário
     };
 
@@ -276,7 +276,8 @@ function translateWeatherDescription(description, targetLanguage) {
     const translatedDescription = translations[lowerCaseDescription] || 'Desconhecido';
 
     if (targetLanguage === 'pt') {
-        return translatedDescription;
+        // Capitaliza a primeira letra da tradução
+        return translatedDescription.charAt(0).toUpperCase() + translatedDescription.slice(1);
     } else {
         return description;
     }
