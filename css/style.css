@@ -24,18 +24,13 @@ body {
   background-color: #1d9ffc;
 }
 
-@media only screen and (max-width: 600px) {
-  body {
-    grid-template-columns: 1fr;
-  }
-}
-
 .wrapper {
-  max-width: 400px;
+  max-width: 90%; /* Ajuste a largura máxima para uma porcentagem da largura da tela */
   width: 100%;
   background: #fff;
   border-radius: 7px;
   box-shadow: 7px 7px 20px rgba(0, 0, 0, 0.05);
+  margin: 0 auto; /* Centraliza o card na tela */
 }
 
 .wrapper header {
@@ -249,4 +244,16 @@ header-clima {
 
 .humidity i {
   font-size: 37px;
+}
+
+@media only screen and (max-width: 600px) {
+  body {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  .wrapper {
+    max-width: 400px; /* Em telas maiores, use um max-width fixo */
+  }
 }
