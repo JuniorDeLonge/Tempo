@@ -43,9 +43,7 @@ body {
   font-size: 21px;
   font-weight: 500;
   color: #43affc;
-  padding: 16px 15px;
-  align-items: center;
-  border-bottom: 1px solid #ccc;
+  padding: 23px 27px 4px;
   border-radius: 10px;
 }
 
@@ -62,8 +60,8 @@ header i {
 }
 
 .wrapper.active header i {
-  margin-left: 5px;
-  font-size: 30px;
+  font-size: 20px;
+  margin: 7px;
 }
 
 .wrapper .input-part {
@@ -139,12 +137,25 @@ header i {
   background: #fff;
 }
 
+.input-part {
+  text-align: center; /* Isso centralizará o conteúdo dentro da .input-part */
+}
+
 .input-part button {
   color: #fff;
   cursor: pointer;
-  background: #43affc;
+  background: #59abe5;
   transition: 0.3s ease;
+  width: 100px;
+  height: 40px;
+  border: none;
+  border-radius: 5px;
+
+  /* Centraliza horizontalmente */
+  margin-left: auto;
+  margin-right: auto;
 }
+
 
 .input-part button:hover {
   background: #1d9ffc;
