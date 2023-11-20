@@ -22,7 +22,7 @@ body {
   align-items: center;
   min-height: 100vh;
   padding: 1.25rem;
-  background: var(--cor-de-fundo) url("imagens/bg-jr.jpg") center center/cover no-repeat fixed;
+  background: var(--cor-de-fundo) url("https://juniordelonge.github.io/Tempo/imagens/bg-jr.jpg") center center/cover no-repeat fixed;
 }
 
 /* Wrapper */
