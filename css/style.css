@@ -2,6 +2,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
 /* Reset CSS */
+:root {
+  --cor-de-fundo: #1d9ffc;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -18,22 +22,17 @@ body {
   align-items: center;
   min-height: 100vh;
   padding: 1.25rem;
-  background-image: url("https://juniordelonge.github.io/clima/imagens/bg-jr.jpg");
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-color: #1d9ffc;
+  background: var(--cor-de-fundo) url("imagens/bg-jr.jpg") center center/cover no-repeat fixed;
 }
 
 /* Wrapper */
 .wrapper {
-  max-width: 90%; /* Ajuste a largura máxima para uma porcentagem da largura da tela */
+  max-width: 90%;
   width: 100%;
   background: #fff;
   border-radius: 7px;
   box-shadow: 1px 1px 15px #eee;
-  margin: 0 auto; /* Centraliza o card na tela */
+  margin: 0 auto;
   border-radius: 10px;
 }
 
@@ -138,7 +137,7 @@ header i {
 }
 
 .input-part {
-  text-align: center; /* Isso centralizará o conteúdo dentro da .input-part */
+  text-align: center;
 }
 
 .input-part button {
@@ -150,12 +149,9 @@ header i {
   height: 40px;
   border: none;
   border-radius: 5px;
-
-  /* Centraliza horizontalmente */
   margin-left: auto;
   margin-right: auto;
 }
-
 
 .input-part button:hover {
   background: #1d9ffc;
@@ -271,6 +267,6 @@ header i {
 
 @media only screen and (min-width: 600px) {
   .wrapper {
-    max-width: 400px; /* Em telas maiores, use um max-width fixo */
+    max-width: 400px;
   }
 }
